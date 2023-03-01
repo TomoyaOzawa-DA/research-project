@@ -1,0 +1,78 @@
+---
+title: "BenchmarkStudy"
+author: "Tomoya Ozawa"
+date: "2023-03-01"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE}
+library(MASS)
+library(tidyverse)
+library(strucchange)
+```
+
+## Simulated data
+
+```{r}
+set.seed(123)
+X_1 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_2 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+Beta_1 <- matrix(rep(1, 5), nrow = 5)
+Beta_2 <- matrix(c(-1, 0, -1, 0, 1), nrow = 5)
+epsilon_1 <- rnorm(100, 0, 1)
+epsilon_2 <- rnorm(100, 0, 1)
+
+Y_1 <- X_1%*%Beta_1 + epsilon_1
+Y_2 <- X_2%*%Beta_2 + epsilon_2
+
+Y <- rbind(Y_1, Y_2)
+X <- rbind(X_1, X_2)
+```
+
+```{r}
+df_simulated <- cbind(Y, X) %>% 
+  as.data.frame()
+
+colnames(df_simulated) <- c("Y", "X1", "X2", "X3", "X4", "X5")
+
+df_simulated %>% 
+  head()
+```
+
+```{r}
+df_simulated %>% 
+  mutate(time = row_number()) %>% 
+  ggplot(mapping = aes(x = time, y = Y)) +
+  geom_line()
+```
+
+
+
+## Benchmark Methods:
+
+
+
+### Bai and Perron (2003)
+
+- `breakpoints` from [strucchange](https://cran.r-project.org/web/packages/strucchange/strucchange.pdf)
+
+
+```{r}
+result_Bai_Perron <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+result_Bai_Perron
+```
+
+```{r}
+result_Bai_Perron %>% plot()
+```
+
+
+
+
+
+
+
