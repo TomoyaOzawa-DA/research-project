@@ -7,6 +7,7 @@ Tomoya Ozawa
 library(MASS)
 library(tidyverse)
 library(strucchange)
+library(segmented)
 ```
 
 ## Simulated data
@@ -58,7 +59,7 @@ df_simulated %>%
 
 ### Bai and Perron (2003)
 
-- `breakpoints` from
+- `breakpoints()` from
   [strucchange](https://cran.r-project.org/web/packages/strucchange/strucchange.pdf)
 
 ``` r
@@ -78,8 +79,36 @@ result_Bai_Perron
     ## Corresponding to breakdates:
     ## 0.5
 
+- BIC is used as criteria to choose the number of change points
+
 ``` r
 result_Bai_Perron %>% plot()
 ```
 
 ![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+### Muggeo (2003)
+
+- `segmented()` from
+  [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted)
+
+- It seems to be different from what we will do in our research. detect
+  not change point in y but change point in the relation ship between y
+  and covariates.
+
+``` r
+model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5)
+```
+
+    ## Call: segmented.lm(obj = model_lm, seg.Z = ~X1 + X2 + X3 + X4 + X5)
+    ## 
+    ## Meaningful coefficients of the linear terms:
+    ## (Intercept)           X1           X2           X3           X4           X5  
+    ##     -0.9890      -0.3680       1.5449      -2.5012       0.7590       1.5728  
+    ##       U1.X1        U1.X2        U1.X3        U1.X4        U1.X5  
+    ##      0.4442      -1.1461       2.4938      -0.4394      -0.7934  
+    ## 
+    ## Estimated Break-Point(s):
+    ## psi1.X1  psi1.X2  psi1.X3  psi1.X4  psi1.X5  
+    ## -0.3177  -0.8916  -1.3267  -0.2155  -1.4566

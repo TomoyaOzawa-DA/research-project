@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(MASS)
 library(tidyverse)
 library(strucchange)
+library(segmented)
 ```
 
 ## Simulated data
@@ -58,7 +59,7 @@ df_simulated %>%
 
 ### Bai and Perron (2003)
 
-- `breakpoints` from [strucchange](https://cran.r-project.org/web/packages/strucchange/strucchange.pdf)
+- `breakpoints()` from [strucchange](https://cran.r-project.org/web/packages/strucchange/strucchange.pdf)
 
 
 ```{r}
@@ -66,12 +67,24 @@ result_Bai_Perron <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated
 result_Bai_Perron
 ```
 
+- BIC is used as criteria to choose the number of change points
+
 ```{r}
 result_Bai_Perron %>% plot()
 ```
 
 
 
+### Muggeo (2003)
+
+- `segmented()` from [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted)
+
+- It seems to be different from what we will do in our research. detect not change point in y but change point in the relation ship between y and covariates.
+
+```{r}
+model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5)
+```
 
 
 
