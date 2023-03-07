@@ -84,26 +84,79 @@ result_Bai_Perron
     ## Corresponding to breakdates:
     ## 0.5
 
+``` r
+summary(result_Bai_Perron)
+```
+
+    ## 
+    ##   Optimal (m+1)-segment partition: 
+    ## 
+    ## Call:
+    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+    ## 
+    ## Breakpoints at observation number:
+    ##                          
+    ## m = 1         100        
+    ## m = 2   42    100        
+    ## m = 3   42    100     166
+    ## m = 4   42    97  127 159
+    ## m = 5   40 70 100 139 169
+    ## 
+    ## Corresponding to breakdates:
+    ##                                    
+    ## m = 1             0.5              
+    ## m = 2   0.21      0.5              
+    ## m = 3   0.21      0.5         0.83 
+    ## m = 4   0.21      0.485 0.635 0.795
+    ## m = 5   0.2  0.35 0.5   0.695 0.845
+    ## 
+    ## Fit:
+    ##                                        
+    ## m   0     1     2     3     4     5    
+    ## RSS 671.5 194.3 183.5 177.0 171.9 169.7
+    ## BIC 846.9 636.0 661.6 691.5 722.7 757.3
+
 - BIC is used as criteria to choose the number of change points
 
 ``` r
 result_Bai_Perron %>% plot()
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
 ### Muggeo (2003)
 
 - `segmented()` from
   [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted)
 
-- It seems to be different from what we will do in our research. detect
-  not change point in y but change point in the relation ship between y
-  and covariates.
+- I am not sure what `seg.Z` means. Document says `seg.Z` is the
+  segmented variable, i.e. the continuous covariates understood to have
+  a piecewise-linear relationship will be estimated
 
 ``` r
+df_simulated <- mutate(df_simulated,
+                       time = row_number())
 model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5)
+segmented(model_lm, seg.Z =  ~ time)
+```
+
+    ## Call: segmented.lm(obj = model_lm, seg.Z = ~time)
+    ## 
+    ## Meaningful coefficients of the linear terms:
+    ## (Intercept)           X1           X2           X3           X4           X5  
+    ##    1.249381    -0.126393     0.603808    -0.196111     0.549034     0.818364  
+    ##     U1.time  
+    ##   -0.003353  
+    ## 
+    ## Estimated Break-Point(s):
+    ## psi1.time  
+    ##        83
+
+``` r
+df_simulated <- mutate(df_simulated,
+                       time = row_number())
+model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5)
 ```
 
     ## Call: segmented.lm(obj = model_lm, seg.Z = ~X1 + X2 + X3 + X4 + X5)
