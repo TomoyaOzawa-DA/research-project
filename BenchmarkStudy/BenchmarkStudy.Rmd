@@ -14,9 +14,10 @@ library(MASS)
 library(tidyverse)
 library(strucchange)
 library(segmented)
+library(bcp)
 ```
 
-## Simulated data
+## Simulated data: One change Point
 
 ```{r}
 set.seed(123)
@@ -85,6 +86,14 @@ result_Bai_Perron %>% plot()
 
 
 
+### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
+
+- `bcp()` from [bcp](https://cran.r-project.org/web/packages/bcp/bcp.pdf) package
+
+```{r}
+result_bcp <- bcp(y = Y, x = X)
+plot(result_bcp)
+```
 
 ### Muggeo (2003)
 
@@ -94,18 +103,105 @@ result_Bai_Perron %>% plot()
 
 
 ```{r}
-df_simulated <- mutate(df_simulated,
-                       time = row_number())
-model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ time)
+model_lm <- lm(Y ~ 1, data = df_simulated)
+segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = X1)
 ```
+
+
 
 ```{r}
 df_simulated <- mutate(df_simulated,
                        time = row_number())
 model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5)
+segmented(model_lm, seg.Z =  ~ time) %>% plot()
 ```
+
+```{r}
+# df_simulated <- mutate(df_simulated,
+#                        time = row_number())
+# model_lm <- lm(Y ~ time, data = df_simulated)
+# segmented(model_lm, seg.Z = ~ X1 + X2 + X3 + X4 + X5) %>% summary()
+```
+
+```{r}
+model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5) %>% plot(X1)
+```
+
+
+
+## Simulated data: multiple (3) change points
+
+```{r}
+set.seed(123)
+X_const <- matrix(rep(1, 100), nrow = 100)
+X_1 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_2 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_3 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_4 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+
+X_1 <- cbind(X_const, X_1)
+X_2 <- cbind(X_const, X_2)
+X_3 <- cbind(X_const, X_3)
+X_4 <- cbind(X_const, X_4)
+
+Beta_1 <- matrix(rep(1, 6), nrow = 6)
+Beta_2 <- matrix(c(1, -1, 0, -1, 0, 1), nrow = 6)
+Beta_3 <- matrix(c(1, 0, 1, 1, 0, -1), nrow = 6)
+Beta_4 <- matrix(c(1, 1, 0, -1, -1, 1), nrow = 6)
+
+epsilon_1 <- rnorm(100, 0, 1)
+epsilon_2 <- rnorm(100, 0, 1)
+epsilon_3 <- rnorm(100, 0, 1)
+epsilon_4 <- rnorm(100, 0, 1)
+
+Y_1 <- X_1%*%Beta_1 + epsilon_1
+Y_2 <- X_2%*%Beta_2 + epsilon_2
+Y_3 <- X_3%*%Beta_3 + epsilon_3
+Y_4 <- X_4%*%Beta_4 + epsilon_4
+
+Y_multi <- rbind(Y_1, Y_2, Y_3, Y_4)
+X_multi <- rbind(X_1, X_2, X_3, X_4)
+```
+
+```{r}
+df_simulated_multi <- cbind(Y_multi, X_multi) %>% 
+  as.data.frame()
+
+colnames(df_simulated_multi) <- c("Y", "const", "X1", "X2", "X3", "X4", "X5")
+
+df_simulated_multi %>% 
+  head()
+```
+
+## Benchmark Methods:
+
+### Bai and Perron (2003)
+
+```{r}
+result_Bai_Perron_multi <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated_multi)
+result_Bai_Perron_multi
+```
+
+```{r}
+summary(result_Bai_Perron_multi)
+```
+
+
+```{r}
+result_Bai_Perron_multi %>% plot()
+```
+
+### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
+
+```{r}
+result_bcp_multi <- bcp(y = Y_multi, x = X_multi)
+plot(result_bcp_multi)
+```
+
+
+
+
 
 
 

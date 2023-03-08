@@ -8,9 +8,10 @@ library(MASS)
 library(tidyverse)
 library(strucchange)
 library(segmented)
+library(bcp)
 ```
 
-## Simulated data
+## Simulated data: One change Point
 
 ``` r
 set.seed(123)
@@ -124,6 +125,18 @@ result_Bai_Perron %>% plot()
 
 ![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
 
+### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
+
+- `bcp()` from
+  [bcp](https://cran.r-project.org/web/packages/bcp/bcp.pdf) package
+
+``` r
+result_bcp <- bcp(y = Y, x = X)
+plot(result_bcp)
+```
+
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+
 ### Muggeo (2003)
 
 - `segmented()` from
@@ -134,39 +147,151 @@ result_Bai_Perron %>% plot()
   a piecewise-linear relationship will be estimated
 
 ``` r
-df_simulated <- mutate(df_simulated,
-                       time = row_number())
-model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ time)
+model_lm <- lm(Y ~ 1, data = df_simulated)
+segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = X1)
 ```
 
-    ## Call: segmented.lm(obj = model_lm, seg.Z = ~time)
-    ## 
-    ## Meaningful coefficients of the linear terms:
-    ## (Intercept)           X1           X2           X3           X4           X5  
-    ##    1.249381    -0.126393     0.603808    -0.196111     0.549034     0.818364  
-    ##     U1.time  
-    ##   -0.003353  
-    ## 
-    ## Estimated Break-Point(s):
-    ## psi1.time  
-    ##        83
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
 df_simulated <- mutate(df_simulated,
                        time = row_number())
 model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5)
+segmented(model_lm, seg.Z =  ~ time) %>% plot()
 ```
 
-    ## Call: segmented.lm(obj = model_lm, seg.Z = ~X1 + X2 + X3 + X4 + X5)
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+
+``` r
+# df_simulated <- mutate(df_simulated,
+#                        time = row_number())
+# model_lm <- lm(Y ~ time, data = df_simulated)
+# segmented(model_lm, seg.Z = ~ X1 + X2 + X3 + X4 + X5) %>% summary()
+```
+
+``` r
+model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5) %>% plot(X1)
+```
+
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+## Simulated data: multiple (3) change points
+
+``` r
+set.seed(123)
+X_const <- matrix(rep(1, 100), nrow = 100)
+X_1 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_2 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_3 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+X_4 <- mvrnorm(n = 100, mu = rep(0, 5), Sigma = diag(5))
+
+X_1 <- cbind(X_const, X_1)
+X_2 <- cbind(X_const, X_2)
+X_3 <- cbind(X_const, X_3)
+X_4 <- cbind(X_const, X_4)
+
+Beta_1 <- matrix(rep(1, 6), nrow = 6)
+Beta_2 <- matrix(c(1, -1, 0, -1, 0, 1), nrow = 6)
+Beta_3 <- matrix(c(1, 0, 1, 1, 0, -1), nrow = 6)
+Beta_4 <- matrix(c(1, 1, 0, -1, -1, 1), nrow = 6)
+
+epsilon_1 <- rnorm(100, 0, 1)
+epsilon_2 <- rnorm(100, 0, 1)
+epsilon_3 <- rnorm(100, 0, 1)
+epsilon_4 <- rnorm(100, 0, 1)
+
+Y_1 <- X_1%*%Beta_1 + epsilon_1
+Y_2 <- X_2%*%Beta_2 + epsilon_2
+Y_3 <- X_3%*%Beta_3 + epsilon_3
+Y_4 <- X_4%*%Beta_4 + epsilon_4
+
+Y_multi <- rbind(Y_1, Y_2, Y_3, Y_4)
+X_multi <- rbind(X_1, X_2, X_3, X_4)
+```
+
+``` r
+df_simulated_multi <- cbind(Y_multi, X_multi) %>% 
+  as.data.frame()
+
+colnames(df_simulated_multi) <- c("Y", "const", "X1", "X2", "X3", "X4", "X5")
+
+df_simulated_multi %>% 
+  head()
+```
+
+    ##             Y const          X1         X2         X3          X4          X5
+    ## 1  0.62752621     1 -0.07355602 -0.7152422  2.1988103 -0.71040656 -0.56047565
+    ## 2  0.65471668     1 -1.16865142 -0.7526890  1.3124130  0.25688371 -0.23017749
+    ## 3 -0.06800476     1 -0.63474826 -0.9385387 -0.2651451 -0.24669188  1.55870831
+    ## 4  1.40403267     1 -0.02884155 -1.0525133  0.5431941 -0.34754260  0.07050839
+    ## 5  0.17100153     1  0.67069597 -0.4371595 -0.4143399 -0.95161857  0.12928774
+    ## 6  0.25915468     1 -1.65054654  0.3311792 -0.4762469 -0.04502772  1.71506499
+
+## Benchmark Methods:
+
+### Bai and Perron (2003)
+
+``` r
+result_Bai_Perron_multi <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated_multi)
+result_Bai_Perron_multi
+```
+
     ## 
-    ## Meaningful coefficients of the linear terms:
-    ## (Intercept)           X1           X2           X3           X4           X5  
-    ##     0.01096     -0.36798      1.54494     -2.50118      0.75899      1.57281  
-    ##       U1.X1        U1.X2        U1.X3        U1.X4        U1.X5  
-    ##     0.44417     -1.14610      2.49375     -0.43945     -0.79337  
+    ##   Optimal 4-segment partition: 
     ## 
-    ## Estimated Break-Point(s):
-    ## psi1.X1  psi1.X2  psi1.X3  psi1.X4  psi1.X5  
-    ## -0.3177  -0.8916  -1.3267  -0.2155  -1.4566
+    ## Call:
+    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated_multi)
+    ## 
+    ## Breakpoints at observation number:
+    ## 100 200 300 
+    ## 
+    ## Corresponding to breakdates:
+    ## 0.25 0.5 0.75
+
+``` r
+summary(result_Bai_Perron_multi)
+```
+
+    ## 
+    ##   Optimal (m+1)-segment partition: 
+    ## 
+    ## Call:
+    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated_multi)
+    ## 
+    ## Breakpoints at observation number:
+    ##                            
+    ## m = 1                   300
+    ## m = 2   97              300
+    ## m = 3   100     200     300
+    ## m = 4   84  144 204     300
+    ## m = 5   71  131 191 251 311
+    ## 
+    ## Corresponding to breakdates:
+    ##                                           
+    ## m = 1                               0.75  
+    ## m = 2   0.2425                      0.75  
+    ## m = 3   0.25          0.5           0.75  
+    ## m = 4   0.21   0.36   0.51          0.75  
+    ## m = 5   0.1775 0.3275 0.4775 0.6275 0.7775
+    ## 
+    ## Fit:
+    ##                                              
+    ## m   0      1      2      3      4      5     
+    ## RSS 1535.5  994.7  640.7  321.1  393.0  502.6
+    ## BIC 1715.1 1583.4 1449.4 1215.0 1337.8 1478.1
+
+``` r
+result_Bai_Perron_multi %>% plot()
+```
+
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+
+### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
+
+``` r
+result_bcp_multi <- bcp(y = Y_multi, x = X_multi)
+plot(result_bcp_multi)
+```
+
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
