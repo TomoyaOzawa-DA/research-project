@@ -1,7 +1,7 @@
 BenchmarkStudy
 ================
 Tomoya Ozawa
-2023-03-01
+2023-04-01
 
 ``` r
 library(MASS)
@@ -54,12 +54,17 @@ df_simulated %>%
 
 ``` r
 df_simulated %>% 
+  write.csv("simulation_data_R.csv", row.names = FALSE)
+```
+
+``` r
+df_simulated %>% 
   mutate(time = row_number()) %>% 
   ggplot(mapping = aes(x = time, y = Y)) +
   geom_line()
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 ## Benchmark Methods:
 
@@ -67,9 +72,13 @@ df_simulated %>%
 
 - `breakpoints()` from
   [strucchange](https://cran.r-project.org/web/packages/strucchange/strucchange.pdf)
+  - `breaks =`: maximal number of change points for detecting
+  - `h =`: minimal segment size either given as fraction relative to the
+    sample size or as an integer giving the minimal number of
+    observations in each segment.
 
 ``` r
-result_Bai_Perron <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+result_Bai_Perron <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated, breaks = 5, h = 0.15)
 result_Bai_Perron
 ```
 
@@ -77,7 +86,8 @@ result_Bai_Perron
     ##   Optimal 2-segment partition: 
     ## 
     ## Call:
-    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, h = 0.15, 
+    ##     breaks = 5, data = df_simulated)
     ## 
     ## Breakpoints at observation number:
     ## 100 
@@ -93,7 +103,8 @@ summary(result_Bai_Perron)
     ##   Optimal (m+1)-segment partition: 
     ## 
     ## Call:
-    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+    ## breakpoints.formula(formula = Y ~ X1 + X2 + X3 + X4 + X5, h = 0.15, 
+    ##     breaks = 5, data = df_simulated)
     ## 
     ## Breakpoints at observation number:
     ##                          
@@ -123,7 +134,7 @@ summary(result_Bai_Perron)
 result_Bai_Perron %>% plot()
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
 
@@ -135,32 +146,23 @@ result_bcp <- bcp(y = Y, x = X)
 plot(result_bcp)
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
-
-### Muggeo (2003)
-
-- `segmented()` from
-  [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted)
-
-- I am not sure what `seg.Z` means. Document says `seg.Z` is the
-  segmented variable, i.e. the continuous covariates understood to have
-  a piecewise-linear relationship will be estimated
-
-``` r
-model_lm <- lm(Y ~ 1, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = X1)
-```
-
 ![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
+<!-- ### Muggeo (2003) -->
+<!-- - `segmented()` from [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted) -->
+<!-- - I am not sure what `seg.Z` means. Document says `seg.Z` is the segmented variable, i.e. the continuous covariates understood to have a piecewise-linear relationship will be estimated -->
+
 ``` r
-df_simulated <- mutate(df_simulated,
-                       time = row_number())
-model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ time) %>% plot()
+# model_lm <- lm(Y ~ 1, data = df_simulated)
+# segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = X1)
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+``` r
+# df_simulated <- mutate(df_simulated,
+#                        time = row_number())
+# model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+# segmented(model_lm, seg.Z =  ~ time) %>% plot()
+```
 
 ``` r
 # df_simulated <- mutate(df_simulated,
@@ -170,11 +172,9 @@ segmented(model_lm, seg.Z =  ~ time) %>% plot()
 ```
 
 ``` r
-model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5) %>% plot(X1)
+# model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+# segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = "X1")
 ```
-
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
 
 ## Simulated data: multiple (3) change points
 
@@ -285,7 +285,7 @@ summary(result_Bai_Perron_multi)
 result_Bai_Perron_multi %>% plot()
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
 
@@ -294,4 +294,4 @@ result_bcp_multi <- bcp(y = Y_multi, x = X_multi)
 plot(result_bcp_multi)
 ```
 
-![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+![](BenchmarkStudy_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->

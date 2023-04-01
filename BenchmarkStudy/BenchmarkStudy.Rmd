@@ -1,7 +1,7 @@
 ---
 title: "BenchmarkStudy"
 author: "Tomoya Ozawa"
-date: "2023-03-01"
+date: "`r Sys.Date()`"
 output: github_document
 ---
 
@@ -52,6 +52,12 @@ df_simulated %>%
 
 ```{r}
 df_simulated %>% 
+  write.csv("simulation_data_R.csv", row.names = FALSE)
+```
+
+
+```{r}
+df_simulated %>% 
   mutate(time = row_number()) %>% 
   ggplot(mapping = aes(x = time, y = Y)) +
   geom_line()
@@ -66,10 +72,14 @@ df_simulated %>%
 ### Bai and Perron (2003)
 
 - `breakpoints()` from [strucchange](https://cran.r-project.org/web/packages/strucchange/strucchange.pdf)
-
-
+  - `breaks = `: maximal number of change points for detecting
+  - `h = `: minimal segment size either given as fraction relative to the sample size or as an integer giving the minimal number of observations in each segment.
+  
+  
+  
+  
 ```{r}
-result_Bai_Perron <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+result_Bai_Perron <- breakpoints(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated, breaks = 5, h = 0.15)
 result_Bai_Perron
 ```
 
@@ -86,6 +96,7 @@ result_Bai_Perron %>% plot()
 
 
 
+
 ### Wang and Emerson (2015); Barry and Hartigan (1993): Bayesian approach
 
 - `bcp()` from [bcp](https://cran.r-project.org/web/packages/bcp/bcp.pdf) package
@@ -95,25 +106,25 @@ result_bcp <- bcp(y = Y, x = X)
 plot(result_bcp)
 ```
 
-### Muggeo (2003)
+<!-- ### Muggeo (2003) -->
 
-- `segmented()` from [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted)
+<!-- - `segmented()` from [segmented](https://cran.r-project.org/web/packages/segmented/segmented.pdfted) -->
 
-- I am not sure what `seg.Z` means. Document says `seg.Z` is the segmented variable, i.e. the continuous covariates understood to have a piecewise-linear relationship will be estimated
+<!-- - I am not sure what `seg.Z` means. Document says `seg.Z` is the segmented variable, i.e. the continuous covariates understood to have a piecewise-linear relationship will be estimated -->
 
 
 ```{r}
-model_lm <- lm(Y ~ 1, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = X1)
+# model_lm <- lm(Y ~ 1, data = df_simulated)
+# segmented(model_lm, seg.Z =  ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = X1)
 ```
 
 
 
 ```{r}
-df_simulated <- mutate(df_simulated,
-                       time = row_number())
-model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =  ~ time) %>% plot()
+# df_simulated <- mutate(df_simulated,
+#                        time = row_number())
+# model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+# segmented(model_lm, seg.Z =  ~ time) %>% plot()
 ```
 
 ```{r}
@@ -124,8 +135,8 @@ segmented(model_lm, seg.Z =  ~ time) %>% plot()
 ```
 
 ```{r}
-model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
-segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5) %>% plot(X1)
+# model_lm <- lm(Y ~ X1 + X2 + X3 + X4 + X5, data = df_simulated)
+# segmented(model_lm, seg.Z =   ~ X1 + X2 + X3 + X4 + X5) %>% plot(term = "X1")
 ```
 
 
