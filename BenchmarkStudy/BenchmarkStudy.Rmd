@@ -102,7 +102,7 @@ result_Bai_Perron %>% plot()
 - `bcp()` from [bcp](https://cran.r-project.org/web/packages/bcp/bcp.pdf) package
 
 ```{r}
-result_bcp <- bcp(y = Y, x = X)
+result_bcp <- bcp(y = Y, x = X, p0 = 1, nreg = 3)
 plot(result_bcp)
 ```
 
