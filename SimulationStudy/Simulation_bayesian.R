@@ -64,6 +64,8 @@ library(foreach)
 # rho: [0, 0.3, 0.7]
 # SNR: [6, 3.52, 2.07, 1.22, 0.71]
 
+# rho:0.3
+# SNR: 1.22
 result_rho_03_SNR_122 <- foreach(
   i = 1:500#, 
   #.combine = 'c'
@@ -74,6 +76,67 @@ result_rho_03_SNR_122 <- foreach(
 
 # spent 5 days...
 saveRDS(result_rho_03_SNR_122, "result_bayes_rho_03_SNR_122.rds")
+
+
+# rho:0.3
+# SNR: 0.71
+
+library(tictoc)
+library(doParallel)
+
+tic()
+cores <- detectCores()
+cl <- makeCluster(cores)
+registerDoParallel(cl)
+
+result_rho_03_SNR_071 <- foreach(
+  i = 1:500,
+  .packages=c("mvtnorm", "bcp")
+  #.combine = 'c'
+) %dopar% {
+  simulation_five_variates_bayes(n = 1000, SNR = 0.71, rho = 0.3)
+}
+
+stopCluster(cl)
+toc()
+
+# 
+saveRDS(result_rho_03_SNR_071, "result_bayes_rho_03_SNR_071.rds")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # make output to csv
 output <- readRDS("result_bayes_rho_03_SNR_122.rds")
