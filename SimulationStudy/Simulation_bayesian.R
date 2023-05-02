@@ -159,10 +159,23 @@ write.csv(df_top5, "SimulationStudy/results/result_bayes_rho_03_SNR_122.csv", ro
 
 
 
+# make output to csv
+output <- readRDS("SimulationStudy/results/result_bayes_rho_03_SNR_071_20230501.rds")
 
+# change point is 501
+# the locations of change points with the top5 highest posterior probaility.
+columns <- c("rho", "SNR", "n", "cp1", "cp2", "cp3", "cp4", "cp5", "cp6")
+df_top5 <- data.frame(matrix(nrow = 500, ncol = length(columns)))
+colnames(df_top5) <- columns
+df_top5$rho <- 0.3
+df_top5$SNR <-0.71
+df_top5$n <-1000
 
+for (i in 1:500){
+  df_top5[i, 4:9] <- output[[i]]$cps
+}
 
-
+write.csv(df_top5, "SimulationStudy/results/result_bayes_rho_03_SNR_071_20230501.csv", row.names = FALSE)
 
 
 
