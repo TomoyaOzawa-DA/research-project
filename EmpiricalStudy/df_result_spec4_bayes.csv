@@ -1,0 +1,307 @@
+country,year,posterior_prob
+United Kingdom,1971,0.202
+United Kingdom,1972,0.612
+United Kingdom,1973,0.024
+United Kingdom,1974,0.02
+United Kingdom,1975,0.108
+United Kingdom,1976,0.182
+United Kingdom,1977,0.832
+United Kingdom,1978,0.034
+United Kingdom,1979,0.036
+United Kingdom,1980,0.024
+United Kingdom,1981,0.066
+United Kingdom,1982,0.432
+United Kingdom,1983,0.508
+United Kingdom,1984,0.13
+United Kingdom,1985,0.782
+United Kingdom,1986,0.22
+United Kingdom,1987,0.66
+United Kingdom,1988,0.428
+United Kingdom,1989,0.27
+United Kingdom,1990,0.052
+United Kingdom,1991,0.078
+United Kingdom,1992,0.116
+United Kingdom,1993,0.076
+United Kingdom,1994,0.082
+United Kingdom,1995,0.622
+United Kingdom,1996,0.164
+United Kingdom,1997,0.084
+United Kingdom,1998,0.142
+United Kingdom,1999,0.022
+United Kingdom,2000,0.042
+United Kingdom,2001,0.044
+United Kingdom,2002,0.02
+United Kingdom,2003,0.036
+United Kingdom,2004,0.036
+United Kingdom,2005,0.02
+United Kingdom,2006,0.024
+United Kingdom,2007,0.266
+United Kingdom,2008,0.556
+United Kingdom,2009,0.18
+United Kingdom,2010,0.042
+United Kingdom,2011,0.02
+United Kingdom,2012,0.026
+United Kingdom,2013,0.052
+United Kingdom,2014,0.128
+United Kingdom,2015,0.122
+United Kingdom,2016,0.03
+United Kingdom,2017,0.02
+United Kingdom,2018,0.016
+United Kingdom,2019,1
+United Kingdom,2020,0.08
+United Kingdom,2021,NA
+France,1971,0.662
+France,1972,0.872
+France,1973,0.028
+France,1974,0.056
+France,1975,0.988
+France,1976,0.042
+France,1977,0.578
+France,1978,0.31
+France,1979,0.148
+France,1980,0.376
+France,1981,0.236
+France,1982,0.164
+France,1983,0.182
+France,1984,0.086
+France,1985,0.66
+France,1986,0.252
+France,1987,0.73
+France,1988,0.316
+France,1989,0.472
+France,1990,0.354
+France,1991,0.346
+France,1992,0.146
+France,1993,0.138
+France,1994,0.07
+France,1995,0.072
+France,1996,0.186
+France,1997,0.69
+France,1998,0.14
+France,1999,0.172
+France,2000,0.088
+France,2001,0.018
+France,2002,0.03
+France,2003,0.024
+France,2004,0.024
+France,2005,0.022
+France,2006,0.168
+France,2007,0.776
+France,2008,0.062
+France,2009,0.026
+France,2010,0.026
+France,2011,0.03
+France,2012,0.012
+France,2013,0.03
+France,2014,0.018
+France,2015,0.024
+France,2016,0.022
+France,2017,0.026
+France,2018,0.048
+France,2019,0.994
+France,2020,0.398
+France,2021,NA
+Germany,1971,0.168
+Germany,1972,0.132
+Germany,1973,0.074
+Germany,1974,0.498
+Germany,1975,0.258
+Germany,1976,0.328
+Germany,1977,0.878
+Germany,1978,0.064
+Germany,1979,0.052
+Germany,1980,0.028
+Germany,1981,0.054
+Germany,1982,0.136
+Germany,1983,0.28
+Germany,1984,0.16
+Germany,1985,0.412
+Germany,1986,0.55
+Germany,1987,0.216
+Germany,1988,0.134
+Germany,1989,0.736
+Germany,1990,0.242
+Germany,1991,0.184
+Germany,1992,0.234
+Germany,1993,0.07
+Germany,1994,0.12
+Germany,1995,0.12
+Germany,1996,0.086
+Germany,1997,0.098
+Germany,1998,0.044
+Germany,1999,0.024
+Germany,2000,0.076
+Germany,2001,0.128
+Germany,2002,0.22
+Germany,2003,0.176
+Germany,2004,0.642
+Germany,2005,0.156
+Germany,2006,0.09
+Germany,2007,0.032
+Germany,2008,0.024
+Germany,2009,0.02
+Germany,2010,0.052
+Germany,2011,0.038
+Germany,2012,0.168
+Germany,2013,0.244
+Germany,2014,0.318
+Germany,2015,0.074
+Germany,2016,0.058
+Germany,2017,0.024
+Germany,2018,0.042
+Germany,2019,0.724
+Germany,2020,0.042
+Germany,2021,NA
+Luxembourg,1971,0.12
+Luxembourg,1972,0.22
+Luxembourg,1973,0.066
+Luxembourg,1974,0.886
+Luxembourg,1975,0.082
+Luxembourg,1976,0.08
+Luxembourg,1977,0.294
+Luxembourg,1978,0.614
+Luxembourg,1979,0.198
+Luxembourg,1980,0.33
+Luxembourg,1981,0.064
+Luxembourg,1982,0.046
+Luxembourg,1983,0.068
+Luxembourg,1984,0.146
+Luxembourg,1985,0.286
+Luxembourg,1986,0.416
+Luxembourg,1987,0.19
+Luxembourg,1988,0.494
+Luxembourg,1989,0.37
+Luxembourg,1990,0.688
+Luxembourg,1991,0.15
+Luxembourg,1992,0.034
+Luxembourg,1993,0.032
+Luxembourg,1994,0.034
+Luxembourg,1995,0.042
+Luxembourg,1996,0.112
+Luxembourg,1997,0.11
+Luxembourg,1998,0.484
+Luxembourg,1999,0.464
+Luxembourg,2000,0.132
+Luxembourg,2001,0.152
+Luxembourg,2002,0.374
+Luxembourg,2003,0.482
+Luxembourg,2004,0.032
+Luxembourg,2005,0.018
+Luxembourg,2006,0.014
+Luxembourg,2007,0.012
+Luxembourg,2008,0.026
+Luxembourg,2009,0.02
+Luxembourg,2010,0.02
+Luxembourg,2011,0.07
+Luxembourg,2012,0.108
+Luxembourg,2013,0.274
+Luxembourg,2014,0.308
+Luxembourg,2015,0.11
+Luxembourg,2016,0.026
+Luxembourg,2017,0.026
+Luxembourg,2018,0.038
+Luxembourg,2019,0.168
+Luxembourg,2020,0.032
+Luxembourg,2021,NA
+Ireland,1971,0.082
+Ireland,1972,0.324
+Ireland,1973,0.042
+Ireland,1974,0.094
+Ireland,1975,0.062
+Ireland,1976,0.786
+Ireland,1977,0.278
+Ireland,1978,0.038
+Ireland,1979,0.024
+Ireland,1980,0.026
+Ireland,1981,0.012
+Ireland,1982,0.022
+Ireland,1983,0.018
+Ireland,1984,0.02
+Ireland,1985,0.024
+Ireland,1986,0.016
+Ireland,1987,0.056
+Ireland,1988,0.13
+Ireland,1989,0.206
+Ireland,1990,0.504
+Ireland,1991,0.238
+Ireland,1992,0.032
+Ireland,1993,0.068
+Ireland,1994,0.142
+Ireland,1995,0.776
+Ireland,1996,0.072
+Ireland,1997,0.562
+Ireland,1998,0.476
+Ireland,1999,0.422
+Ireland,2000,0.142
+Ireland,2001,0.062
+Ireland,2002,0.096
+Ireland,2003,0.338
+Ireland,2004,0.39
+Ireland,2005,0.134
+Ireland,2006,0.03
+Ireland,2007,0.054
+Ireland,2008,0.548
+Ireland,2009,0.262
+Ireland,2010,0.084
+Ireland,2011,0.014
+Ireland,2012,0.018
+Ireland,2013,0.02
+Ireland,2014,0.028
+Ireland,2015,0.034
+Ireland,2016,0.018
+Ireland,2017,0.018
+Ireland,2018,0.024
+Ireland,2019,0.144
+Ireland,2020,0.022
+Ireland,2021,NA
+Malta,1971,0.036
+Malta,1972,0.03
+Malta,1973,0.126
+Malta,1974,0.278
+Malta,1975,0.056
+Malta,1976,0.036
+Malta,1977,0.032
+Malta,1978,0.052
+Malta,1979,0.972
+Malta,1980,0.054
+Malta,1981,0.072
+Malta,1982,0.044
+Malta,1983,0.028
+Malta,1984,1
+Malta,1985,1
+Malta,1986,0.044
+Malta,1987,0.04
+Malta,1988,0.04
+Malta,1989,0.08
+Malta,1990,0.276
+Malta,1991,0.24
+Malta,1992,0.602
+Malta,1993,0.094
+Malta,1994,0.122
+Malta,1995,0.048
+Malta,1996,0.14
+Malta,1997,0.04
+Malta,1998,0.072
+Malta,1999,0.96
+Malta,2000,0.076
+Malta,2001,0.846
+Malta,2002,0.34
+Malta,2003,0.796
+Malta,2004,0.22
+Malta,2005,0.096
+Malta,2006,0.112
+Malta,2007,0.062
+Malta,2008,0.032
+Malta,2009,0.05
+Malta,2010,0.03
+Malta,2011,0.064
+Malta,2012,0.076
+Malta,2013,0.102
+Malta,2014,0.174
+Malta,2015,0.13
+Malta,2016,0.252
+Malta,2017,0.546
+Malta,2018,0.118
+Malta,2019,0.024
+Malta,2020,0.036
+Malta,2021,NA
