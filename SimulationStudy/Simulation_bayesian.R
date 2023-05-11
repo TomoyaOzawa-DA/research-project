@@ -132,49 +132,6 @@ saveRDS(result_rho_07_SNR_207, "result_bayes_rho_07_SNR_207.rds")
 
 
 
-tic()
-cores <- detectCores()
-cl <- makeCluster(cores)
-registerDoParallel(cl)
-
-result_rho_07_SNR_352 <- foreach(
-  i = 1:500,
-  .packages=c("mvtnorm", "bcp")
-  #.combine = 'c'
-) %dopar% {
-  simulation_five_variates_bayes(n = 1000, SNR = 3.52, rho = 0.7)
-}
-
-stopCluster(cl)
-toc()
-
-# 
-saveRDS(result_rho_07_SNR_352, "result_bayes_rho_07_SNR_352.rds")
-
-
-
-tic()
-cores <- detectCores()
-cl <- makeCluster(cores)
-registerDoParallel(cl)
-
-result_rho_07_SNR_6 <- foreach(
-  i = 1:500,
-  .packages=c("mvtnorm", "bcp")
-  #.combine = 'c'
-) %dopar% {
-  simulation_five_variates_bayes(n = 1000, SNR = 6, rho = 0.7)
-}
-
-stopCluster(cl)
-toc()
-
-# 
-saveRDS(result_rho_07_SNR_6, "result_bayes_rho_07_SNR_6.rds")
-
-
-
-
 
 
 
